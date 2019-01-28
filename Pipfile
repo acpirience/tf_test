@@ -13,6 +13,7 @@ pandas = "*"
 numpy = "*"
 sklearn = "*"
 matplotlib = "*"
+loguru = "*"
 
 [requires]
 python_version = "3.6"

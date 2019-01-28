@@ -6,18 +6,18 @@
 import pickle
 
 import matplotlib.pyplot as pyplot
+from matplotlib import style
 import numpy as np
 import pandas as pd
 import sklearn
-from matplotlib import style
 from sklearn import linear_model
 
 
-def main():
+def run():
     """
-        Main method
+        launch linear regression example
     """
-    data = pd.read_csv("student-mat.csv", sep=";")
+    data = pd.read_csv("./linear_regression/student-mat.csv", sep=";")
     data = data[["G1", "G2", "G3", "studytime", "failures", "absences"]]
 
     # G = final grade
@@ -51,13 +51,13 @@ def main():
             print(f"New best score: {accuracy}")
             best_score = accuracy
             # save model with pickle
-            with open("student_model.pickle", "wb") as pickle_file:
+            with open("./linear_regression/student_model.pickle", "wb") as pickle_file:
                 pickle.dump(linear, pickle_file)
 
     print(f"Best Score: {best_score}")
 
     # load model with pickle
-    pickle_in = open("student_model.pickle", "rb")
+    pickle_in = open("./linear_regression/student_model.pickle", "rb")
     linear = pickle.load(pickle_in)
 
     print(f"Coefficient = {linear.coef_}")
@@ -72,15 +72,15 @@ def main():
         print(f"Predicted: {round(predictions[x], 2):>5} => Real grade: {y_test[x]:<2}")
 
     # plot data with matplotlib
-    vars = ["G1", "G2", "studytime", "failures", "absences"]
+    variables = ["G1", "G2", "studytime", "failures", "absences"]
 
     style.use("ggplot")
-    for var in vars:
-        pyplot.scatter(data[var], data["G3"])
-        pyplot.xlabel(var)
+    for variable in variables:
+        pyplot.scatter(data[variable], data["G3"])
+        pyplot.xlabel(variable)
         pyplot.ylabel("Final Grade")
         pyplot.show()
 
 
 if __name__ == "__main__":
-    main()
+    run()
