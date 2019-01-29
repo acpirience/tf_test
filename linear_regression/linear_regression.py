@@ -11,6 +11,7 @@ import numpy as np
 import pandas as pd
 import sklearn
 from sklearn import linear_model
+from loguru import logger
 
 
 def run():
@@ -48,28 +49,30 @@ def run():
         accuracy = linear.score(x_test, y_test)
 
         if accuracy > best_score:
-            print(f"New best score: {accuracy}")
+            logger.info(f"New best score: {accuracy}")
             best_score = accuracy
             # save model with pickle
             with open("./linear_regression/student_model.pickle", "wb") as pickle_file:
                 pickle.dump(linear, pickle_file)
 
-    print(f"Best Score: {best_score}")
+    logger.info(f"Best Score: {best_score}")
 
     # load model with pickle
     pickle_in = open("./linear_regression/student_model.pickle", "rb")
     linear = pickle.load(pickle_in)
 
-    print(f"Coefficient = {linear.coef_}")
-    print(f"Intercept   = {linear.intercept_}")
-    print()
+    logger.info(f"Coefficient = {linear.coef_}")
+    logger.info(f"Intercept   = {linear.intercept_}")
+    logger.info("")
 
     # show examples of predicted grade vs actual grades (5 first)
     predictions = linear.predict(x_test)
 
     for x in range(5):
-        print(f"Values: {x_test[x]}")
-        print(f"Predicted: {round(predictions[x], 2):>5} => Real grade: {y_test[x]:<2}")
+        logger.info(f"Values: {x_test[x]}")
+        logger.info(
+            f"Predicted: {round(predictions[x], 2):>5} => Real grade: {y_test[x]:<2}"
+        )
 
     # plot data with matplotlib
     variables = ["G1", "G2", "studytime", "failures", "absences"]
