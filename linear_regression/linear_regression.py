@@ -18,6 +18,9 @@ def run():
     """
         launch linear regression example
     """
+
+    # data: https://archive.ics.uci.edu/ml/datasets/Student+Performance
+    logger.info("Loading /linear_regression/student-mat.csv")
     data = pd.read_csv("./linear_regression/student-mat.csv", sep=";")
     data = data[["G1", "G2", "G3", "studytime", "failures", "absences"]]
 
