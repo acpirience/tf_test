@@ -4,10 +4,8 @@
 """
 
 import sklearn
-from sklearn import linear_model
 from sklearn import preprocessing
 from sklearn.neighbors import KNeighborsClassifier
-import numpy as np
 import pandas as pd
 
 from loguru import logger
@@ -33,6 +31,7 @@ def run():
     safety = label_encoder.fit_transform(list(data["safety"]))
     cls = label_encoder.fit_transform(list(data["class"]))
 
+    # we'll predict the class
     predict = "class"
     x = list(zip(buying, maint, door, persons, lug_boot, safety))
     y = list(cls)
@@ -40,6 +39,21 @@ def run():
     x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(
         x, y, test_size=0.1
     )
+
+    model = KNeighborsClassifier(n_neighbors=9)
+
+    model.fit(x_train, y_train)
+    accuracy = model.score(x_test, y_test)
+    logger.info(accuracy)
+
+    predicted = model.predict(x_test)
+    names = ["unacc", "acc", "good", "vgood"]
+
+    for x in range(len(predicted)):
+        logger.info("Predicted: " + names[predicted[x]] + " => Data: " + str(x_test[x]))
+        logger.info("Actual: " + names[y_test[x]])
+        n = model.kneighbors([x_test[x]], 9, True)
+        logger.info(f"N: {n}")
 
 
 if __name__ == "__main__":
